@@ -1,5 +1,5 @@
 const express = require('express');
-const wbm = require('./wbm');
+const wbm = require('/wbm');
 const fs = require('fs');
 const path = require('path');
 
