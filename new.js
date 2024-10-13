@@ -20,6 +20,9 @@ client.on('qr', (qr) => {
 // Log successful connection
 client.on('ready', () => {
     console.log('WhatsApp client is ready!');
+    
+    // Start the message sending interval after the client is ready
+    startMessageInterval();
 });
 
 // Log connection status
@@ -45,6 +48,38 @@ app.post('/send-message', async (req, res) => {
         res.status(500).send({ status: 'Error sending message', error });
     }
 });
+
+// Function to send messages to specific numbers
+async function sendScheduledMessages() {
+    const contacts = [
+        { number: '1234567890', name: 'Contact 1' }, // Replace with actual numbers
+        { number: '0987654321', name: 'Contact 2' }  // Replace with actual numbers
+    ];
+    
+    // Replace with the actual number of OTPs generated today
+    const otpsGeneratedToday = 10; 
+
+    for (const contact of contacts) {
+        const message = `Server is running! Total OTPs generated today: ${otpsGeneratedToday}`;
+        const chatId = contact.number.includes('@c.us') ? contact.number : `${contact.number}@c.us`;
+
+        try {
+            await client.sendMessage(chatId, message);
+            console.log(`Message sent to ${contact.name}: ${message}`);
+        } catch (error) {
+            console.error(`Error sending message to ${contact.name}:`, error);
+        }
+    }
+}
+
+// Function to start the message sending interval
+function startMessageInterval() {
+    // Run immediately on startup
+    sendScheduledMessages();
+
+    // Set interval to send messages every hour (3600000 ms)
+    setInterval(sendScheduledMessages, 3600000);
+}
 
 // Set up the server to listen for API calls
 const PORT = process.env.PORT || 3000;
