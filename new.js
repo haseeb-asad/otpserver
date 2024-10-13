@@ -52,15 +52,15 @@ app.post('/send-message', async (req, res) => {
 // Function to send messages to specific numbers
 async function sendScheduledMessages() {
     const contacts = [
-        { number: '1234567890', name: 'Contact 1' }, // Replace with actual numbers
-        { number: '0987654321', name: 'Contact 2' }  // Replace with actual numbers
+        { number: '923237146391', name: 'Haseeb' }, // Replace with actual numbers
+        { number: '923242756548', name: 'Anas' }  // Replace with actual numbers
     ];
     
     // Replace with the actual number of OTPs generated today
-    const otpsGeneratedToday = 10; 
+    // const otpsGeneratedToday = 10; 
 
     for (const contact of contacts) {
-        const message = `Server is running! Total OTPs generated today: ${otpsGeneratedToday}`;
+        const message = `Server is running!`;
         const chatId = contact.number.includes('@c.us') ? contact.number : `${contact.number}@c.us`;
 
         try {
