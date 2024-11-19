@@ -20,7 +20,6 @@ client.on('qr', (qr) => {
 // Log successful connection
 client.on('ready', () => {
     console.log('WhatsApp client is ready!');
-    
     // Start the message sending interval after the client is ready
     startMessageInterval();
 });
@@ -36,12 +35,82 @@ client.initialize();
 // Define the API endpoint to handle automation
 app.post('/send-message', async (req, res) => {
     const { number, message } = req.body;
-
     try {
         const chatId = number.includes('@c.us') ? number : `${number}@c.us`;
+        // Send the message
+        await client.sendMessage(chatId, message);
+        res.status(200).send({ status: 'Message sent successfully!' });
+    } catch (error) {
+        console.error('Error sending message:', error);
+        res.status(500).send({ status: 'Error sending message', error });
+    }
+});
+
+app.post('/request-otp', async (req, res) => {
+    const { number, company, name } = req.body;
+    try {
+        if (company.length > 15 || name.length > 15) {
+            return res.status(400).send({ status: 'Company or name should not be larger than 15 characters' });
+        }
+
+        const chatId = number.includes('@c.us') ? number : `${number}@c.us`;
+        // generate random five digit number
+        const otp = Math.floor(10000 + Math.random() * 90000);
+        
+        // Determine message format based on name
+        const message = name && name.toLowerCase() !== 'default' 
+            ? `Hey ${name}! Your ${company} OTP code is *${otp}*. Do Not share it with anyone!`
+            : `Your OTP for ${company} is *${otp}*. Do Not share it with anyone!`;
 
         // Send the message
         await client.sendMessage(chatId, message);
+        res.status(200).send({ status: 'Message sent successfully!', otp: otp});
+    } catch (error) {
+        console.error('Error sending message:', error);
+        res.status(500).send({ status: 'Error sending message', error });
+    }
+});
+
+app.post('/send-otp', async (req, res) => {
+    const { number, otp, company, name } = req.body;
+    try {
+        // validate if otp is a number 
+        if (isNaN(otp)) {
+            return res.status(400).send({ status: 'Invalid OTP' });
+        }
+
+        // validate company name and name should not be larger than 15 characters
+        if (company.length > 15 || name.length > 15) {
+            return res.status(400).send({ status: 'Company or name should not be larger than 15 characters' });
+        }
+
+        const chatId = number.includes('@c.us') ? number : `${
+            number
+        }@c.us`;
+        // Determine message format based on name
+        const message = name && name.toLowerCase() !== 'default' 
+            ? `Hey ${name}! Your ${company} OTP code is *${otp}*. Do Not share it with anyone!`
+            : `Your OTP for ${company} is *${otp}*. Do Not share it with anyone!`;
+            
+        // Send the message
+        await client.sendMessage(chatId, message);
+        res.status(200).send({ status: 'Message sent successfully!' });
+    } catch (error) {
+
+        console.error('Error sending message:', error);
+        res.status(500).send({ status: 'Error sending message', error });
+    }
+
+});
+
+app.post('/send-demo-message', async (req, res) => {
+    const { number } = req.body;
+    try {
+        const chatId = number.includes('@c.us') ? number : `${
+            number
+        }@c.us`;
+        // Send the message
+        await client.sendMessage(chatId, 'This is a demo message from WhatsApp Automation API');
         res.status(200).send({ status: 'Message sent successfully!' });
     } catch (error) {
         console.error('Error sending message:', error);
@@ -53,12 +122,8 @@ app.post('/send-message', async (req, res) => {
 async function sendScheduledMessages() {
     const contacts = [
         { number: '923237146391', name: 'Haseeb' }, // Replace with actual numbers
-        { number: '923242756548', name: 'Anas' }  // Replace with actual numbers
     ];
     
-    // Replace with the actual number of OTPs generated today
-    // const otpsGeneratedToday = 10; 
-
     for (const contact of contacts) {
         const message = `Server is running!`;
         const chatId = contact.number.includes('@c.us') ? contact.number : `${contact.number}@c.us`;
