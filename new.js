@@ -11,6 +11,18 @@ const client = new Client({
     authStrategy: new LocalAuth()
 });
 
+// const authMiddleware = (req, res, next) => {
+//     const uid = req.headers.authorization;
+//     if (!uid || uid !== process.env.AUTH_TOKEN) {
+//         return res.status(401).json({
+//             status: 'error',
+//             message: 'Authorization token required'
+//         });
+//     }
+//     req.uid = uid;
+//     next();
+// };
+
 // Generate and display QR code for WhatsApp login
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
@@ -109,8 +121,9 @@ app.post('/send-demo-message', async (req, res) => {
         const chatId = number.includes('@c.us') ? number : `${
             number
         }@c.us`;
+        const random = Math.floor(1000 + Math.random() * 9000);
         // Send the message
-        await client.sendMessage(chatId, 'This is a demo message from WhatsApp Automation API');
+        await client.sendMessage(chatId, 'This is a demo message from nextOTP! Your randomly generated code is *' + random + '*');
         res.status(200).send({ status: 'Message sent successfully!' });
     } catch (error) {
         console.error('Error sending message:', error);
