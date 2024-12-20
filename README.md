@@ -1,4 +1,3 @@
-```markdown
 # WhatsApp Automation API
 
 This project provides a Node.js server application that utilizes the `whatsapp-web.js` library to automate WhatsApp messaging through a web API. It includes functionality for sending messages, generating OTPs, and scheduling messages to specific contacts.
@@ -95,4 +94,3 @@ Contributions are welcome! For major changes, please open an issue first to disc
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
