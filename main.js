@@ -134,7 +134,7 @@ app.post('/send-demo-message', async (req, res) => {
 // Function to send messages to specific numbers
 async function sendScheduledMessages() {
     const contacts = [
-        { number: '923237146391', name: 'Haseeb' }, // Replace with actual numbers
+        { number: '923212346391', name: 'Haseeb' }, // Replace with actual numbers
     ];
     
     for (const contact of contacts) {
