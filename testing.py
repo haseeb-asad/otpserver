@@ -7,8 +7,8 @@ from concurrent.futures import ThreadPoolExecutor
 def send_message(number, company, name):
     start_time = time.time()
     print(f"Sending message to {number} for {company} by {name}...")
-    url = 'http://98.82.27.106:5001/request-otp'
-    # url = 'https://nextotp.tech/api/request-otp'
+    url = 'http://35.223.83.127:3000/request-otp'
+    # url = 'https://nextotp.tech/api/request-otp'                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
     headers = {'apiKey': "5185e1df-f450-49ae-a308-92d75b2e349"}
     data = { 'number': number, 'name': name, 'otp': 12345, 'apiKey': '5185e1df-f450-49ae-a308-982d75b2e349', "company": company }
 
