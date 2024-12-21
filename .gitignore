@@ -1,6 +1,6 @@
 node_modules
+testing.py
 
 .wwebjs_auth
 .wwebjs_cache
 .env
-testing.py
